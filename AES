@@ -1,4 +1,48 @@
 from Crypto.Cipher import AES
+
+from Crypto.Random import get_random_bytes
+
+from Crypto.Util.Padding import pad
+
+import base64
+
+def encrypt(plaintext, key, iv=b'0123456789abcdef'):
+
+cipher = AES.new(key.encode('utf8'), AES.MODE_CBC, iv)
+
+padded_data = pad(plaintext.encode('utf8'), cipher.block_size)
+
+ciphertext = cipher.encrypt(padded_data)
+
+return base64.b64encode(ciphertext).decode('utf8')
+
+def decrypt(ciphertext, key, iv=b'0123456789abcdef'):
+
+cipher = AES.new(key.encode('utf8'), AES.MODE_CBC, iv)
+
+data = base64.b64decode(ciphertext)
+
+plaintext = cipher.decrypt(data)
+
+return plaintext.decode('utf8').rstrip()
+
+print("Miresevini ne FIEK\n")
+
+plaintext = raw_input("Shenoni tekstin per enkriptim: ")
+
+key = raw_input ("Shenoni celesin prej 16 karaktereve per enkriptim: ")
+
+ciphertext = encrypt(plaintext, key)
+
+print"Teksti enkriptuar: ",ciphertext
+
+plaintext = decrypt(ciphertext, key)
+
+print "Teksti i dekriptuar: ",plaintext
+
+
+
+from Crypto.Cipher import AES
 from Crypto import Random
 
 print "Jepe mesazhin:"
